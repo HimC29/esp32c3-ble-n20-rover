@@ -1,0 +1,8 @@
+*.kicad_prl
+*-backups/
+*-bak
+*.kicad_prl-bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+_autosave-*
+*.net
