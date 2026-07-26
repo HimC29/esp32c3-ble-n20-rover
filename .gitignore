@@ -1,4 +1,11 @@
+# KiCad project local settings
 *.kicad_prl
+
+# KiCad lock & temp files
+*.lck
+~*
+
+# Backups & netlists
 *-backups/
 *-bak
 *.kicad_prl-bak
@@ -6,3 +13,12 @@
 *.kicad_pcb-bak
 _autosave-*
 *.net
+
+# ERC / DRC reports & intermediate files
+*.cir
+*.xml
+*.csv
+
+# Cache directories
+.kicad_xcache/
+fp-info-cache
