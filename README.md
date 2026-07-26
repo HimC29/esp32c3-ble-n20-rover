@@ -4,19 +4,30 @@ An open source tiny ESP32 C3 Super Mini car that is light and fast controlled by
 
 > This project is still in development and is not stable to use yet.
 
-## Components:
-- 1x ESP32 C3 Super Mini 
-- 2x N20 Motor 500RPM 5V-6V
-- 2x 34mm Wheel for GA12 N20
-- 1x TB6612 Motor Driver (ROB-14450)
-- 1x SX1308 Boost Convertor
-- 1x 3.7V LiPo 1000mAh 102040 Battery
-- TP4056 USB-C w/ Protection
-And passive components:
-- 3x 0.1uF Ceramic Capacitors
-- 1x 100uF Electrolytic Capacitors
-- 1x IN5819 Diode
-- Extra stuff like wires, base for car, 3rd ball wheel, etc.
+## Components List
+
+### Core Electronics & Modules
+* **1x** ESP32-C3 SuperMini (`U1`)
+* **1x** TB6612FNG Motor Driver Module (ROB-14450) (`U2`)
+* **1x** MT3608 DC-DC Step-Up Boost Converter Module (`U3`)
+* **1x** TP4056 USB-C LiPo Charger Module w/ Protection (`U4`)
+
+### Power & Actuators
+* **1x** 3.7V 1000mAh LiPo Battery (`BT1`) (102040)
+* **2x** N20 Micro Gear Motors 500RPM 5V-6V (`M1`, `M2`)
+* **1x** SPST Toggle / Power Switch (`SW1`)
+
+### Passives & Discrete Components
+* **3x** 0.1µF Ceramic Capacitors (`C2`, `C3`, `C4`)
+* **1x** 100µF Electrolytic Capacitor (`C1`)
+* **2x** 100kΩ Resistors (`R1`, `R2`)
+* **1x** Schottky Diode (`D1`) (1N5819)
+
+### Mechanical & Hardware
+* **2x** 34mm Wheels (for GA12 N20 shaft)
+* **1x** Ball Caster Wheel (3rd support)
+* **1x** Chassis / Rover Frame
+* Connecting wires, headers, and hardware fasteners
 
 ## Wiring
 Schematics can be found in [here](schematics/).
