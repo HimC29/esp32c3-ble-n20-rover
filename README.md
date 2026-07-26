@@ -32,7 +32,7 @@ An open source tiny ESP32 C3 Super Mini car that is light and fast controlled by
 ## Wiring
 Schematics can be found in [here](schematics/).
 
-## How to create
+## Assembly & Setup
 1. Gather all components and wire everything up according to the [schematics](schematics/).
 2. Flash the firmware to your ESP32-C3:
    - Open the `firmware/` folder in PlatformIO.
