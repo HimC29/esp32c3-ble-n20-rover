@@ -1,0 +1,144 @@
+/* ---- Reset & base ---- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #14171a;
+    color: #e8eaed;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 48px;
+}
+
+h1 {
+    font-family: "JetBrains Mono", "SF Mono", Consolas, monospace;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8b939c;
+    margin: 0 0 28px;
+    text-align: center;
+}
+
+/* ---- Connect button ---- */
+#connectBtn {
+    font-family: "JetBrains Mono", "SF Mono", Consolas, monospace;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #e8eaed;
+    background: #1e2227;
+    border: 1px solid #2c3138;
+    border-radius: 10px;
+    padding: 12px 28px;
+    margin-bottom: 40px;
+    cursor: pointer;
+    position: relative;
+    padding-left: 40px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+/* status dot: red = disconnected by default */
+#connectBtn::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e5484d;
+    box-shadow: 0 0 6px #e5484d;
+}
+
+#connectBtn:hover {
+    border-color: #3ddc84;
+}
+
+/* toggle this class from JS once connected */
+#connectBtn.connected::before {
+    background: #3ddc84;
+    box-shadow: 0 0 8px #3ddc84;
+}
+
+#connectBtn:active {
+    background: #262b31;
+}
+
+/* ---- Controller layout ---- */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #14171a;
+    color: #e8eaed;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 0 48px;
+    overflow-x: hidden;
+}
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    touch-action: none;
+    user-select: none;
+}
+
+.cluster {
+    display: flex;
+    gap: 10px;
+}
+
+#controls button {
+    width: 76px;
+    height: 76px;
+    font-family: "JetBrains Mono", "SF Mono", Consolas, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8b939c;
+    background: #1e2227;
+    border: 1px solid #2c3138;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease, transform 0.1s ease;
+}
+
+#controls button.active {
+    background: #2a1f14;
+    border-color: #ff9d2f;
+    color: #ff9d2f;
+    transform: scale(0.96);
+    box-shadow: 0 0 14px rgba(255, 157, 47, 0.35);
+}
+
+#controls button:disabled,
+#controls.disabled button {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+@media (max-width: 400px) {
+    #controls button {
+        width: 64px;
+        height: 64px;
+    }
+    #controls {
+        padding: 0 12px;
+    }
+}
