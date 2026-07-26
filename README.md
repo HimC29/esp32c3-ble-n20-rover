@@ -2,6 +2,8 @@
 
 An open source tiny ESP32 C3 Super Mini car that is light and fast controlled by a website using BLE.
 
+> This project is still in development and is not stable to use yet.
+
 ## Components:
 - 1x ESP32 C3 Super Mini 
 - 2x N20 Motor 500RPM 5V-6V
