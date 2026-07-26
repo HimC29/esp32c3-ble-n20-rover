@@ -18,9 +18,10 @@ An open source tiny ESP32 C3 Super Mini car that is light and fast controlled by
 * **1x** SPST Toggle / Power Switch (`SW1`)
 
 ### Passives & Discrete Components
-* **3x** 0.1µF Ceramic Capacitors (`C2`, `C3`, `C4`)
+* **4x** 0.1µF Ceramic Capacitors (`C2`, `C3`, `C4`, `C5`)
 * **1x** 100µF Electrolytic Capacitor (`C1`)
 * **2x** 100kΩ Resistors (`R1`, `R2`)
+* **1x** 0.1Ω Resistor ≥1W (`R3`)
 * **1x** Schottky Diode (`D1`) (1N5819)
 
 ### Mechanical & Hardware
