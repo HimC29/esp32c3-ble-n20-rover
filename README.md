@@ -1,4 +1,4 @@
-# esp32c3-ble-n20-motor
+# esp32c3-ble-n20-rover
 
 An open source tiny ESP32 C3 Super Mini car that is light and fast controlled by a website using BLE.
 
