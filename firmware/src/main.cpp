@@ -25,7 +25,23 @@ const uint8_t BIN1_PIN = 3;
 const uint8_t BIN2_PIN = 4;
 const uint8_t PWMA_PIN = 5;
 const uint8_t PWMB_PIN = 6;
+/* STBY pin is a pin on the motor driver. When it is pulled LOW, it turns off all motors 
+ * We pull it high so that it turns on.
+ */
 const uint8_t STBY_PIN = 7;
+
+unsigned long lastPacketMs = 0; /* Store when the last packet was recieved. */
+const unsigned long SAFETY_TIMEOUT_MS = 500; /* Stop if no packet recieved within SAFETY_TIMEOUT_MS
+                                                ms */
+
+void stopMotors() {
+    digitalWrite(AIN1_PIN, LOW);
+    digitalWrite(AIN2_PIN, LOW);
+    digitalWrite(BIN1_PIN, LOW);
+    digitalWrite(BIN2_PIN, LOW);
+    analogWrite(PWMA_PIN, 0);
+    analogWrite(PWMB_PIN, 0);
+}
 
 /* UUID of BLE service. */
 const char* SERVICE_UUID = "91fb9ba5-7485-4dc1-9bac-a9889bc524b9";
@@ -52,28 +68,75 @@ class Callbacks : public NimBLECharacteristicCallbacks {
         uint8_t rightDir   = value[2];
         uint8_t rightSpeed = value[3];
         
-        Serial.printf(
-            "L: dir=%d speed=%d | R: dir=%d speed=%d\n",
-            leftDir, leftSpeed, rightDir, rightSpeed
-        );
+        if (leftSpeed == 0) {
+            digitalWrite(AIN1_PIN, LOW);
+            digitalWrite(AIN2_PIN, LOW);
+        } else if (leftDir == 1) {
+            digitalWrite(AIN1_PIN, LOW);
+            digitalWrite(AIN2_PIN, HIGH);
+        } else {
+            digitalWrite(AIN1_PIN, HIGH);
+            digitalWrite(AIN2_PIN, LOW);
+        }
+
+        if (rightSpeed == 0) {
+            digitalWrite(BIN1_PIN, LOW);
+            digitalWrite(BIN2_PIN, LOW);
+        } else if (rightDir == 1) {
+            digitalWrite(BIN1_PIN, LOW);
+            digitalWrite(BIN2_PIN, HIGH);
+        } else {
+            digitalWrite(BIN1_PIN, HIGH);
+            digitalWrite(BIN2_PIN, LOW);
+        }
+        
+        analogWrite(PWMA_PIN, leftSpeed);
+        analogWrite(PWMB_PIN, rightSpeed);
+
+        lastPacketMs = millis();
     }
 };
 
 class ServerCallbacks : public NimBLEServerCallbacks {
     void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) override {
         Serial.println("Client connected!");
+        digitalWrite(STBY_PIN, HIGH);
+        stopMotors();
+        lastPacketMs = millis();
     }
 
     void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason) override {
         Serial.printf("Client disconnected, reason: %d\n", reason);
+        stopMotors();
+        digitalWrite(STBY_PIN, LOW);
+        NimBLEDevice::startAdvertising();
     }
 };
 
 void setup() {
     Serial.begin(115200);
-    delay(1000);
     Serial.println("Starting");
 
+    pinMode(BAT_VOLT_PIN, INPUT);
+    pinMode(CURR_SENSE_PIN, INPUT);
+    pinMode(AIN1_PIN, OUTPUT);
+    pinMode(AIN2_PIN, OUTPUT);
+    pinMode(BIN1_PIN, OUTPUT);
+    pinMode(BIN2_PIN, OUTPUT);
+    pinMode(PWMA_PIN, OUTPUT);
+    pinMode(PWMB_PIN, OUTPUT);
+    pinMode(STBY_PIN, OUTPUT);
+
+    /* Set PWM frequency to 20kHz to remove motor whining sounds */
+    analogWriteFrequency(PWMA_PIN, 20000);
+    analogWriteFrequency(PWMB_PIN, 20000);
+    /* Set 8-bit resolution for PWM (0-255) */
+    analogWriteResolution(PWMA_PIN, 8);
+    analogWriteResolution(PWMB_PIN, 8);
+
+    stopMotors();
+    digitalWrite(STBY_PIN, LOW);
+    
     /* Initialize BLE with the name esp32c3-ble-n20-rover. */
     NimBLEDevice::init("esp32c3-ble-n20-rover");
     Serial.println("BLE INIT");
@@ -105,5 +168,12 @@ void setup() {
 }
 
 void loop() {
-    
+    /* If connected but no packets arrive for > SAFETY_TIMEOUT_MS ms, force stop the motors */
+    if (pServer->getConnectedCount() > 0 && lastPacketMs > 0) {
+        if (millis() - lastPacketMs > SAFETY_TIMEOUT_MS) {
+            stopMotors();
+        }
+    }
+    /* Give FreeRTOS time to manage system tasks */
+    vTaskDelay(pdMS_TO_TICKS(10));
 }
