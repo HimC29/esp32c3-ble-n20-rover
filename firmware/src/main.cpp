@@ -13,9 +13,14 @@
  */
 const uint8_t BAT_VOLT_PIN = 0; 
 
+/* This pin detects spike in current draw from the motor driver using a shunt resistor so that it
+ * can shut off the motor before it causes any hardware damage.
+ */
+const uint8_t CURR_SENSE_PIN = 1;
+
 /* Pins related to motor driver. */
 const uint8_t AIN1_PIN = 10;
-const uint8_t AIN2_PIN = 1;
+const uint8_t AIN2_PIN = 20;
 const uint8_t BIN1_PIN = 3;
 const uint8_t BIN2_PIN = 4;
 const uint8_t PWMA_PIN = 5;
